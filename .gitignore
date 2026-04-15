@@ -1,0 +1,19 @@
+# Node / frontend
+node_modules
+app/node_modules
+dist
+app/dist
+npm-debug.log*
+
+# Rust / Tauri
+target
+src-tauri/target
+
+# Env / local config
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+.idea
+.vscode
