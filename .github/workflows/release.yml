@@ -88,11 +88,24 @@ jobs:
             target/release/bundle/**
             target/*/release/bundle/**
 
+  publish-release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: publish-tauri
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Download all packaged artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+
+      - name: Show downloaded assets
+        shell: bash
+        run: |
+          find release-artifacts -type f | sort
+
       - name: Attach assets to GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: |
-            target/release/bundle/**
-            target/*/release/bundle/**
+          files: release-artifacts/**/*
