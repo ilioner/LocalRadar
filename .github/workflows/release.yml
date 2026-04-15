@@ -77,7 +77,7 @@ jobs:
         shell: bash
         run: |
           find target -maxdepth 5 -type d -name bundle -print || true
-          find target -maxdepth 6 -type f \( -name "*.dmg" -o -name "*.msi" -o -name "*.deb" -o -name "*.AppImage" -o -name "*.app.tar.gz" -o -name "*.exe" \) -print || true
+          find target -maxdepth 6 -type f \( -name "*.dmg" -o -name "*.msi" -o -name "*.deb" -o -name "*.AppImage" -o -name "*.rpm" -o -name "*.app.tar.gz" -o -name "*.exe" \) -print || true
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -85,8 +85,20 @@ jobs:
           name: localradar-${{ matrix.platform }}-${{ matrix.target }}
           if-no-files-found: error
           path: |
-            target/release/bundle/**
-            target/*/release/bundle/**
+            target/release/bundle/**/*.dmg
+            target/release/bundle/**/*.msi
+            target/release/bundle/**/*.deb
+            target/release/bundle/**/*.AppImage
+            target/release/bundle/**/*.rpm
+            target/release/bundle/**/*.app.tar.gz
+            target/release/bundle/**/*.exe
+            target/*/release/bundle/**/*.dmg
+            target/*/release/bundle/**/*.msi
+            target/*/release/bundle/**/*.deb
+            target/*/release/bundle/**/*.AppImage
+            target/*/release/bundle/**/*.rpm
+            target/*/release/bundle/**/*.app.tar.gz
+            target/*/release/bundle/**/*.exe
 
   publish-release:
     if: startsWith(github.ref, 'refs/tags/')
@@ -108,4 +120,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: release-artifacts/**/*
+          files: |
+            release-artifacts/**/*.dmg
+            release-artifacts/**/*.msi
+            release-artifacts/**/*.deb
+            release-artifacts/**/*.AppImage
+            release-artifacts/**/*.rpm
+            release-artifacts/**/*.app.tar.gz
+            release-artifacts/**/*.exe
