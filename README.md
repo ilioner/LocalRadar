@@ -15,7 +15,7 @@ It helps you discover, search, and monitor services running on `localhost`, Dock
 
 ## Preview
 
-![LocalRadar overview](./docs/preview-overview.svg)
+![LocalRadar overview](./docs/localradar-screenshot.png)
 
 Keywords:
 - local service discovery
@@ -127,6 +127,32 @@ To build distributable desktop packages locally, use:
 ```
 
 The exact output format depends on your platform and installed Tauri bundling dependencies.
+
+## Troubleshooting
+
+### macOS says "LocalRadar is damaged and can't be opened"
+
+Current macOS builds are unsigned and not notarized yet. On macOS, Gatekeeper may incorrectly show the app as "damaged" even when the package itself is fine.
+
+If you trust the build, remove the quarantine attribute and try again:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/LocalRadar.app
+```
+
+If the app is still in `Downloads`, use the actual path instead:
+
+```bash
+xattr -dr com.apple.quarantine ~/Downloads/LocalRadar.app
+```
+
+You can also try:
+
+1. Right-click `LocalRadar.app` in Finder
+2. Choose `Open`
+3. Confirm that you still want to open it
+
+This workaround is only needed because code signing and notarization are not configured yet.
 
 ## Current Limitations
 

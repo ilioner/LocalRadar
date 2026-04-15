@@ -30,7 +30,7 @@ LocalRadar 是一个跨平台桌面应用，用来发现本机服务、管理 lo
 
 ## 预览
 
-![LocalRadar overview](./docs/preview-overview.svg)
+![LocalRadar overview](./docs/localradar-screenshot.png)
 
 ## 它能解决什么问题
 
@@ -131,6 +131,32 @@ cargo check
 ```
 
 最终产物格式取决于当前平台以及 Tauri 打包依赖是否齐全。
+
+## 常见问题
+
+### macOS 提示“LocalRadar”已损坏，无法打开
+
+当前 macOS 构建产物还没有做代码签名和 notarization 公证。macOS 的 Gatekeeper 在这种情况下，可能会把未签名应用提示成“已损坏”，但这通常不代表安装包本身真的坏了。
+
+如果你确认来源可信，可以先移除隔离属性再打开：
+
+```bash
+xattr -dr com.apple.quarantine /Applications/LocalRadar.app
+```
+
+如果应用还在 `Downloads` 目录，请把路径换成实际位置，例如：
+
+```bash
+xattr -dr com.apple.quarantine ~/Downloads/LocalRadar.app
+```
+
+你也可以尝试：
+
+1. 在 Finder 里右键 `LocalRadar.app`
+2. 选择“打开”
+3. 再确认一次“仍要打开”
+
+这个处理方式只是当前未签名版本的临时解决办法。后续接入签名和公证后，这个提示就会明显减少。
 
 ## 当前限制
 
