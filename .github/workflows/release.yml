@@ -73,14 +73,20 @@ jobs:
             ./app/node_modules/.bin/tauri build
           fi
 
+      - name: Show bundle directories
+        shell: bash
+        run: |
+          find target -maxdepth 5 -type d -name bundle -print || true
+          find target -maxdepth 6 -type f \( -name "*.dmg" -o -name "*.msi" -o -name "*.deb" -o -name "*.AppImage" -o -name "*.app.tar.gz" -o -name "*.exe" \) -print || true
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: localradar-${{ matrix.platform }}-${{ matrix.target }}
           if-no-files-found: error
           path: |
-            src-tauri/target/release/bundle/**
-            src-tauri/target/*/release/bundle/**
+            target/release/bundle/**
+            target/*/release/bundle/**
 
       - name: Attach assets to GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
@@ -88,5 +94,5 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            src-tauri/target/release/bundle/**
-            src-tauri/target/*/release/bundle/**
+            target/release/bundle/**
+            target/*/release/bundle/**
